@@ -13,3 +13,5 @@ rasterio
 gbdxtools
 tqdm
 pandas
+pyproj
+functools

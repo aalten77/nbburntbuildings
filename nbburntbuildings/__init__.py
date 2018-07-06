@@ -1,3 +1,4 @@
+from ops import *
 from plots import *
 
-__all__ = ['plots']
+__all__ = ['ops', 'plots']
