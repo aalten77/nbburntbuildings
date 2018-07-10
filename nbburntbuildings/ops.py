@@ -1,6 +1,6 @@
 from past.utils import old_div
 from shapely.geometry import shape
-from shapsely import sgeometry
+from shapely import geometry
 import requests
 import os
 from skimage import filters, morphology, measure, color, segmentation, exposure

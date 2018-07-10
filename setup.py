@@ -1,5 +1,5 @@
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # Utility function to read the README file.
 # Used for the long_description.  It's nice, because now 1) we have a top level
@@ -18,17 +18,18 @@ setup(
     author = "Ai-Linh Alten",
     author_email = "ai-linh.alten@sjsu.edu",
     description = ("Functions for the burnt buildings GBDX Notebook"),
-    license = "BSD",
+    license = "MIT",
     keywords = "example documentation tutorial",
-    packages=['nbburntbuildings'],
+    packages=find_packages(exclude=['data']),
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
     ],
-    install_requirements=read_reqs('requirements.txt')
+    install_requirements=read_reqs('requirements.txt'),
+    url='https://github.com/aalten77/nbburntbuildings'
 )
