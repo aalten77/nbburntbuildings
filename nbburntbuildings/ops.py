@@ -12,7 +12,6 @@ import json
 from rasterio import features
 import numpy as np
 import pickle
-from IPython.display import HTML, display
 
 
 # FUNCTIONS
@@ -98,11 +97,3 @@ def reproject(geom, from_proj='EPSG:4326', to_proj='EPSG:26942'):
 def km2_area(polygons):
     reprojected_polygons = [reproject(p) for p in polygons]
     return ops.cascaded_union(reprojected_polygons).area * 1e-6
-
-def displayHTMLtable():
-    display(HTML(
-        '<table style="width:100%;"><th>Method</th><th>Total Area Burnt (km<sup>2</sup>)</th><th>Total Bldgs Burnt</th><tr>{}</tr></table>'.format(
-            '</tr><tr>'.join(
-                '<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in data)
-            )
-     ))
