@@ -10,6 +10,8 @@ import plotly.graph_objs as go
 from branca.element import Element, Figure
 from plotly.offline.offline import _plot_html
 from plotly.graph_objs import Line
+from IPython.display import HTML, display
+
 
 # CONSTANTS
 TMS_1040010039BAAF00 = 'https://s3.amazonaws.com/notebooks-small-tms/1040010039BAAF00/{z}/{x}/{y}.png'
@@ -227,3 +229,11 @@ def plot_multi_trace(df, x, y, factor_var, ymax_factor=1.):
     fig = go.Figure(data=graph_data, layout=graph_layout)
 
     return fig
+
+def displayHTMLtable():
+    display(HTML(
+        '<table style="width:100%;"><th>Method</th><th>Total Area Burnt (km<sup>2</sup>)</th><th>Total Bldgs Burnt</th><tr>{}</tr></table>'.format(
+            '</tr><tr>'.join(
+                '<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in data)
+            )
+     ))
