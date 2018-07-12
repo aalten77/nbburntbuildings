@@ -4,6 +4,7 @@ from shapely import geometry
 import requests
 import os
 from skimage import filters, morphology, measure, color, segmentation, exposure
+from skimage.measure import label, regionprops
 from scipy import ndimage as ndi
 from functools import partial
 import pyproj
