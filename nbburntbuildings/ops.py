@@ -27,6 +27,7 @@ from plotly.offline.offline import _plot_html
 from plotly.graph_objs import Line
 from IPython.display import HTML, display
 from sklearn.metrics import confusion_matrix, recall_score, precision_score, accuracy_score
+import geojson
 
 
 
