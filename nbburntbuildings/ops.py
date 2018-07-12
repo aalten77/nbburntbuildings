@@ -352,7 +352,7 @@ def plot_multi_trace(df, x, y, factor_var, ymax_factor=1.):
 
     return fig
 
-def displayHTMLtable():
+def displayHTMLtable(data):
     display(HTML(
         '<table style="width:100%;"><th>Method</th><th>Total Area Burnt (km<sup>2</sup>)</th><th>Total Bldgs Burnt</th><tr>{}</tr></table>'.format(
             '</tr><tr>'.join(
