@@ -31,11 +31,27 @@ from sklearn.metrics import confusion_matrix, recall_score, precision_score, acc
 
 
 # FUNCTIONS
+def pixels_as_features(image, include_gabors=True):
+    # roll axes to conventional row,col,depth
+    img = np.rollaxis(image, 0, 3)
+    rsi = calc_rsi(image)
+    if include_gabors is True:
+        gabors = calc_gabors(image)
+        stack = np.dstack([img, rsi, gabors])
+    else:
+        stack = np.dstack([img, rsi])
+
+    feats = stack.ravel().reshape(stack.shape[0] * stack.shape[1], stack.shape[2])
+
+    return feats
+
+
 def calc_rsi(image):
     # roll axes to conventional row,col,depth
     img = np.rollaxis(image, 0, 3)
 
     # bands: Coastal(0), Blue(1), Green(2), Yellow(3), Red(4), Red-edge(5), NIR1(6), NIR2(7)) Multispectral
+    COAST = img[:, :, 0]
     B = img[:, :, 1]
     G = img[:, :, 2]
     Y = img[:, :, 3]
@@ -64,8 +80,23 @@ def calc_rsi(image):
     gr = old_div(G, R)
     rr = (old_div(NIR1, R)) * (old_div(G, R)) * (old_div(NIR1, RE))
 
-    rsi = np.stack([arvi, dd, gi2, gndvi, ndre, ndvi, ndvi35, ndvi84, nirry, normnir, psri, rey, rvi,
-                    sa, vi1, vire, br, gr, rr], axis=2)
+    ###Built-Up indices
+    wvbi = old_div((COAST - RE), (COAST + RE))
+    wvnhfd = old_div((RE - COAST), (RE + COAST))
+
+    ###SIs
+    evi = old_div((2.5 * (NIR2 - R)), (NIR2 + 6 * R - 7.5 * B + 1))
+    L = 0.5  # some coefficient for Soil Adjusted Vegetation Index (SAVI) DO NOT INCLUDE IN FEATURES
+    savi = old_div(((1 + L) * (NIR2 - R)), (NIR2 + R + L))
+    msavi = old_div((2 * NIR2 + 1 - ((2 * NIR2 + 1) ** 2 - 8 * (NIR2 - R)) ** 0.5), 2)
+    bai = old_div(1.0, ((0.1 + R) ** 2 + 0.06 + NIR2))
+    rgi = old_div(R, G)
+    bri = old_div(B, R)
+
+    rsi = np.stack(
+        [arvi, dd, gi2, gndvi, ndre, ndvi, ndvi35, ndvi84, nirry, normnir, psri, rey, rvi, sa, vi1, vire, br, gr, rr,
+         wvbi, wvnhfd, evi, savi, msavi, bai, rgi, bri],
+        axis=2)
 
     return rsi
 
@@ -90,21 +121,6 @@ def calc_gabors(image, frequency=1, theta_vals=[0, 1, 2, 3]):
     gabors = np.rollaxis(np.dstack([results_list]), 0, 3)
 
     return gabors
-
-
-def pixels_as_features(image, include_gabors=True):
-    # roll axes to conventional row,col,depth
-    img = np.rollaxis(image, 0, 3)
-    rsi = calc_rsi(image)
-    if include_gabors is True:
-        gabors = calc_gabors(image)
-        stack = np.dstack([img, rsi, gabors])
-    else:
-        stack = np.dstack([img, rsi])
-
-    feats = stack.ravel().reshape(stack.shape[0] * stack.shape[1], stack.shape[2])
-
-    return feats
 
 def reproject(geom, from_proj='EPSG:4326', to_proj='EPSG:26942'):
     tfm = partial(pyproj.transform, pyproj.Proj(init=from_proj), pyproj.Proj(init=to_proj))
