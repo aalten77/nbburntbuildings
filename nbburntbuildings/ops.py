@@ -9,6 +9,7 @@
 """
 
 from branca.element import Element, Figure
+import cpickle
 import folium
 from functools import partial
 from gbdxtools import CatalogImage, IdahoImage
@@ -33,6 +34,10 @@ from shapely.geometry import shape, geo, box
 from skimage import filters, morphology, measure, color, segmentation, exposure
 from skimage.measure import label, regionprops
 from sklearn.metrics import confusion_matrix, recall_score, precision_score, accuracy_score
+
+#CONSTANTS
+buildings_geojson_link = 'https://s3.amazonaws.com/gbdx-training/burnt_areas/Nuns_SonomaCounty_Glenn_selected_labelled.geojson'
+RF_model_link = 'https://s3.amazonaws.com/gbdx-training/burnt_areas/rf_allseg_model.pkl'
 
 """Helper functions for the GBDX Notebook."""
 
@@ -134,6 +139,23 @@ def calc_gabors(image, frequency=1, theta_vals=[0, 1, 2, 3]):
     gabors = np.rollaxis(np.dstack([results_list]), 0, 3)
 
     return gabors
+
+#partials
+get_model = partial(get_link, model_url=RF_model_link)
+get_geojson = partial(get_link, model_url=buildings_geojson_link)
+
+def get_link(model_url):
+    """Fetch the RF model pickle file."""
+    response = requests.get(model_url)
+    if sys.version_info[0] == 2:
+        pickle_opts = {}
+    else:
+        pickle_opts = {'encoding': 'latin1'}
+
+    #model = cPickle.load(response.content, **pickle_opts)
+    #model = pickle.loads(response.content, **pickle_opts)
+
+    return response.content
 
 def reproject(geom, from_proj='EPSG:4326', to_proj='EPSG:26942'):
     """Project from ESPG:4326 to ESPG:26942."""
