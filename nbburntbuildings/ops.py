@@ -140,17 +140,17 @@ def calc_gabors(image, frequency=1, theta_vals=[0, 1, 2, 3]):
 
     return gabors
 
-#partials
-get_model = partial(get_link, model_url=RF_model_link)
-get_geojson = partial(get_link, model_url=buildings_geojson_link)
+# #partials
+# get_model = partial(get_link, model_url=RF_model_link)
+# get_geojson = partial(get_link, model_url=buildings_geojson_link)
 
 def get_link(model_url):
     """Fetch the RF model pickle file."""
     response = requests.get(model_url)
-    if sys.version_info[0] == 2:
-        pickle_opts = {}
-    else:
-        pickle_opts = {'encoding': 'latin1'}
+    # if sys.version_info[0] == 2:
+    #     pickle_opts = {}
+    # else:
+    #     pickle_opts = {'encoding': 'latin1'}
 
     #model = cPickle.load(response.content, **pickle_opts)
     #model = pickle.loads(response.content, **pickle_opts)
