@@ -140,9 +140,7 @@ def calc_gabors(image, frequency=1, theta_vals=[0, 1, 2, 3]):
 
     return gabors
 
-#partials
-get_model = partial(get_link, model_url=RF_model_link)
-get_geojson = partial(get_link, model_url=buildings_geojson_link)
+
 
 def get_link(model_url):
     """Fetch the RF model pickle file."""
@@ -156,6 +154,10 @@ def get_link(model_url):
     #model = pickle.loads(response.content, **pickle_opts)
 
     return response.content
+
+#partials
+get_model = partial(get_link, model_url=RF_model_link)
+get_geojson = partial(get_link, model_url=buildings_geojson_link)
 
 def reproject(geom, from_proj='EPSG:4326', to_proj='EPSG:26942'):
     """Project from ESPG:4326 to ESPG:26942."""
