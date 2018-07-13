@@ -9,7 +9,7 @@
 """
 
 from branca.element import Element, Figure
-import cpickle
+import cPickle
 import folium
 from functools import partial
 from gbdxtools import CatalogImage, IdahoImage
