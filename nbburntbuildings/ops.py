@@ -140,9 +140,9 @@ def calc_gabors(image, frequency=1, theta_vals=[0, 1, 2, 3]):
 
     return gabors
 
-# #partials
-# get_model = partial(get_link, model_url=RF_model_link)
-# get_geojson = partial(get_link, model_url=buildings_geojson_link)
+#partials
+get_model = partial(get_link, model_url=RF_model_link)
+get_geojson = partial(get_link, model_url=buildings_geojson_link)
 
 def get_link(model_url):
     """Fetch the RF model pickle file."""
