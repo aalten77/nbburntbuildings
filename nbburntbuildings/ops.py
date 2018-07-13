@@ -550,3 +550,17 @@ def accuracy_measures(predictions, trues):
     # return accuracy, precision, and recall score
     return accuracy_score(trues, predictions), precision_score(trues, predictions, average='binary'), recall_score(
         trues, predictions, average='binary')
+
+
+def create_mask(predictions_2d, sizeX, sizeY, chip_shape):
+    # reshape predictions_2d
+    predictions_2d_res = np.array(predictions_2d)
+    predictions_2d_res = predictions_2d_res.reshape(sizeX, sizeY)
+
+    # create new mask of area of interest
+    new_mask = np.zeros((chip_shape[1], chip_shape[2]))
+    for x in range(0, chip_shape[1], 256):
+        for y in range(0, chip_shape[2], 256):
+            new_mask[x:x + 256, y:y + 256] = predictions_2d_res[x / 256][y / 256]
+
+    return new_mask
