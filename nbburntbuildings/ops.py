@@ -352,9 +352,18 @@ def plot_multi_trace(df, x, y, factor_var, ymax_factor=1.):
 
     return fig
 
-def displayHTMLtable(data):
+def displayHTMLtable(acc_sent2, acc_wv03, acc, prec_sent2, prec_wv03, prec, recall_sent2, recall_wv03, recall):
+    methods = ['Sent2 NBR', 'WV03 NBR', 'WV03 RF']
+    accuracies = ["{:.2%}".format(acc_sent2), "{:.2%}".format(acc_wv03), "{:.2%}".format(acc)]
+    precisions = ["{:.2%}".format(prec_sent2), "{:.2%}".format(prec_wv03), "{:.2%}".format(prec)]
+    recalls = ["{:.2%}".format(recall_sent2), "{:.2%}".format(recall_wv03), "{:.2%}".format(recall)]
+
+    data = methods + accuracies + precisions + recalls
+
+    data = np.reshape(data, (4, 3)).T
+
     display(HTML(
-        '<table style="width:100%;"><th>Method</th><th>Total Area Burnt (km<sup>2</sup>)</th><th>Total Bldgs Burnt</th><tr>{}</tr></table>'.format(
+        '<table style="width:100%;"><th>Method</th><th>Accuracy</th><th>Precision</th><th>Recall</th><tr>{}</tr></table>'.format(
             '</tr><tr>'.join(
                 '<td>{}</td>'.format('</td><td>'.join(str(_) for _ in row)) for row in data)
             )
