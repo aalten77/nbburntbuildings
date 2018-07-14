@@ -8,7 +8,6 @@
 
 """
 
-#from branca.element import Element, Figure
 import cPickle
 import folium
 from functools import partial
@@ -22,9 +21,6 @@ import numpy as np
 import os
 from past.utils import old_div
 import pickle
-#import plotly.graph_objs as go
-#from plotly.graph_objs import Line
-#from plotly.offline.offline import _plot_html
 import pyproj
 from rasterio import features
 import requests
